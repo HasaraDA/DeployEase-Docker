@@ -1,0 +1,31 @@
+---
+- name: Manage Docker Containers
+  hosts: docker-hosts
+  become: true
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull a Docker image
+      community.docker.docker_image:
+        name: "{{ docker_image }}"
+        tag: "{{ tag }}"
+
+    - name: Run a Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_image }}:{{ tag }}"
+        state: started
+        ports:
+          - "{{ host_port }}:{{ docker_port }}"
