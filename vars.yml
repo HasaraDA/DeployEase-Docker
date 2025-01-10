@@ -1,5 +1,6 @@
 user_email: hasara.dulanjana.16@gmail.com
 container_name: Test
 docker_image: nginx
+tag: latest
 docker_port: 80
 host_port: 8080
